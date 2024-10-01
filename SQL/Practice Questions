@@ -1,0 +1,84 @@
+Question 1.
+Write a query to find the total number of customers in the Customers table.
+
+SELECT COUNT(*) AS total_customers
+  from Customers;
+
+
+Question 2.
+Wite a query to get all orders placed in the last 30 days, along with the customer's first and last name.
+
+SELECT C.first_name, C.last_name, O.order_id, O.order_date
+  from Customers C
+  JOIN Orders O ON C.customer_id = O.customer_id
+  WHERE O.order_date >= CURRENT_DATE - INTERVAL 30 DAY;
+
+
+Question 3.
+Calculate the total sales amount for all orders in the Orders table.
+
+SELECT SUM(total_amount)
+  from Orders;
+
+
+Question 4.
+List all products in a specific category (e.g., "Electronics"), showing their names and prices.
+
+SELECT product_name, price
+  from Products
+  WHERE category = 'Electronics';
+
+
+Question 5.
+Write a query to find the average total amount for all orders.
+
+SELECT AVG(total_amount) AS avg_total_amount
+  from Orders;
+
+
+Question 6.
+Identify the top 5 customers by the total amount spent on orders. Include their first and last names.
+
+SELECT C.first_name, C.last_name, SUM(O.total_amount) AS total_spent
+  from Customers C
+  JOIN Orders O ON C.customer_id = O.customer_id
+  GROUP BY C.customer_id, C.first_name, C.last_name
+  ORDER BY total_spent DESC LIMIT 5;
+
+
+Question 7.
+Write a query to get details of each other, including the order ID, customer name, order date, and total amount.
+
+SELECT O.order_id, C.first_name, C.last_name, O.order_date, O.total_amount
+  from Orders O
+  JOIN Customers C ON C.customer_id = O.customer_id;
+
+
+Question 8.
+Find the total quantity sold for each product across all orders.
+
+SELECT P.product_name, SUM(OI.quantity) AS total_quantity
+  from Products P
+  JOIN Order_Items OI ON P.product_id = OI.product_id
+  GROUP BY P.product_name;
+
+
+Question 9.
+Write a query to retrieve a list of all customers who have placed at least one order, along with their order count.
+
+SELECT C.first_name, C.last_name, COUNT(O.customer_id) AS order_count
+  from Customers C
+  JOIN Orders O ON C.customer_id = O.customer_id
+  GROUP BY C.customer_id, C.first_name, C.last_name
+  HAVING COUNT(O.order_id) > 0
+  ORDER BY order_count DESC;
+
+
+Question 10.
+Write a query to find all orders with a total amount greater than $100, including the order ID and the customer's email.
+
+SELECT O.order_id, C.email, O.total_amount
+  from Customers C
+  JOIN Orders O ON C.customer_id = O.customer_id
+  WHERE O.total_amount > 100
+  ORDER BY O.total_amount DESC;
